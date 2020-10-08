@@ -67,8 +67,7 @@ public class ProfilFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btnSpeichern);
-        view.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnSpeichern).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String benutzer = edtBenutzer.getText().toString();
