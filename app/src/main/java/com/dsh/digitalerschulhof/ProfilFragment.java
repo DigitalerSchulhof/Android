@@ -40,7 +40,7 @@ public class ProfilFragment extends Fragment {
     String benutzer;
     String passwort;
 
-    HashMap<String, String> schulen = new HashMap<String, String>();
+    HashMap<String, String> schulen = new HashMap<>();
 
     @Nullable
     @Override
@@ -67,15 +67,16 @@ public class ProfilFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btnSpeichern).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnSpeichern);
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String benutzer = edtBenutzer.getText().toString();
                 String passwort = edtPasswort.getText().toString();
-                String schule   = schulen.values().toArray(new String[] {})[((Spinner) view.findViewById(R.id.spnSchule)).getSelectedItemPosition()];
+                String schule = schulen.values().toArray(new String[]{})[((Spinner) view.findViewById(R.id.spnSchule)).getSelectedItemPosition()];
                 speichern(SPEICHER_BENUTZER, benutzer);
                 speichern(SPEICHER_PASSWORT, passwort);
-                speichern(SPEICHER_SCHULE,   schule);
+                speichern(SPEICHER_SCHULE, schule);
                 edtPasswort.setText("");
 
                 // https://stackoverflow.com/questions/1109022/how-do-you-close-hide-the-android-soft-keyboard-using-java#answer-17789187
@@ -95,6 +96,15 @@ public class ProfilFragment extends Fragment {
             public void onClick(View v) {
                 edtBenutzer.setText(benutzer);
                 edtPasswort.setText(passwort);
+
+                // https://stackoverflow.com/questions/1109022/how-do-you-close-hide-the-android-soft-keyboard-using-java#answer-17789187
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                View view = getActivity().getCurrentFocus();
+                if (view == null) {
+                    view = new View(getActivity());
+                }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 Toast.makeText(getActivity().getApplicationContext(), "Änderungen gelöscht!", Toast.LENGTH_LONG).show();
             }
         });

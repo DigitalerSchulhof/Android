@@ -1,7 +1,9 @@
 package com.dsh.digitalerschulhof;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ public class SchulhofFragment extends Fragment {
     String SPEICHER_BENUTZER    = "benutzer";
     String SPEICHER_PASSWORT    = "passwort";
 
+    String schule;
+
     WebView wv;
     SwipeRefreshLayout sr;
 
@@ -36,6 +40,7 @@ public class SchulhofFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schulhof, container, false);
+        schule = laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de");
         wv = view.findViewById(R.id.wvSchulhof);
         sr = view.findViewById(R.id.srSchulhof);
 
@@ -45,7 +50,12 @@ public class SchulhofFragment extends Fragment {
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
+                if (url.startsWith(schule)) {
+                    return false;
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+                return true;
             }
 
             @Override
@@ -70,6 +80,7 @@ public class SchulhofFragment extends Fragment {
                 super.onPageStarted(view, url, favicon);
             }
         });
+
         wv.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
@@ -81,17 +92,14 @@ public class SchulhofFragment extends Fragment {
         sr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                laden();
+                wv.reload();
+                sr.setRefreshing(true);
             }
         });
 
-        laden();
-        return view;
-    }
-
-    public void laden() {
-        wv.loadUrl(laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de")+"/App");
+        wv.loadUrl(schule+"/App");
         sr.setRefreshing(true);
+        return view;
     }
 
     public String laden(String key) {
