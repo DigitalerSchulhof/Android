@@ -1,14 +1,11 @@
-package de.dsh;
+package com.dsh.digitalerschulhof;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.Window;
 import android.webkit.WebView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;

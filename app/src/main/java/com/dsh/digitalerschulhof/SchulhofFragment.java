@@ -1,11 +1,9 @@
-package de.dsh;
+package com.dsh.digitalerschulhof;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
@@ -21,12 +19,10 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class WebsiteFragment extends Fragment {
+public class SchulhofFragment extends Fragment {
     String SPEICHER_NAME        = "speicher";
     String SPEICHER_SCHULE      = "schule";
     String SPEICHER_BENUTZER    = "benutzer";
@@ -39,17 +35,9 @@ public class WebsiteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_website, container, false);
-        wv = view.findViewById(R.id.wvWebsite);
-        sr = view.findViewById(R.id.srWebsite);
-        BottomNavigationView nav = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
-
-        nav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-                laden();
-            }
-        });
+        View view = inflater.inflate(R.layout.fragment_schulhof, container, false);
+        wv = view.findViewById(R.id.wvSchulhof);
+        sr = view.findViewById(R.id.srSchulhof);
 
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setAllowFileAccess(true);
@@ -68,8 +56,8 @@ public class WebsiteFragment extends Fragment {
                     @Override
                     public void onReceiveValue(String value) {
                         if(value.length() == 2) {
-                            String benutzer = daten(SPEICHER_BENUTZER);
-                            String passwort = daten(SPEICHER_PASSWORT);
+                            String benutzer = laden(SPEICHER_BENUTZER);
+                            String passwort = laden(SPEICHER_PASSWORT);
                             wv.evaluateJavascript("cms_appanmeldung('"+benutzer+"','"+passwort+"');", null);
                         }
                     }
@@ -102,11 +90,11 @@ public class WebsiteFragment extends Fragment {
     }
 
     public void laden() {
-        wv.loadUrl(daten(SPEICHER_SCHULE, "https://digitaler-schulhof.de"));
+        wv.loadUrl(laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de")+"/App");
         sr.setRefreshing(true);
     }
 
-    public String daten(String key) {
+    public String laden(String key) {
         try {
             String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
             return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, "");
@@ -116,7 +104,7 @@ public class WebsiteFragment extends Fragment {
         return "";
     }
 
-    public String daten(String key, String fallback) {
+    public String laden(String key, String fallback) {
         try {
             String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
             return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, fallback);

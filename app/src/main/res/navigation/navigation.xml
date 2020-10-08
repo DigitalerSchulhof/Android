@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_schulhof"
-        android:name="de.dsh.SchulhofFragment"
+        android:name="com.dsh.digitalerschulhof.SchulhofFragment"
         android:label="@string/schulhof"
         tools:layout="@layout/fragment_schulhof" />
 
     <fragment
         android:id="@+id/navigation_website"
-        android:name="de.dsh.WebsiteFragment"
+        android:name="com.dsh.digitalerschulhof.WebsiteFragment"
         android:label="@string/website"
         tools:layout="@layout/fragment_website" />
 
     <fragment
         android:id="@+id/navigation_profil"
-        android:name="de.dsh.ProfilFragment"
+        android:name="com.dsh.digitalerschulhof.ProfilFragment"
         android:label="@string/profil"
         tools:layout="@layout/fragment_profil" />
 </navigation>
