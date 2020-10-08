@@ -138,7 +138,7 @@ public class ProfilFragment extends Fragment {
             }
 
             Spinner spnSchule = getView().findViewById(R.id.spnSchule);
-            spnSchule.setAdapter(new ArrayAdapter(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, schulen.keySet().toArray(new String[] {})));
+            spnSchule.setAdapter(new ArrayAdapter(getActivity().getApplicationContext(), R.layout.profil_spinner, schulen.keySet().toArray(new String[] {})));
 
             String s = laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de");
             for(int i = 0; i < schulen.size(); i++) {

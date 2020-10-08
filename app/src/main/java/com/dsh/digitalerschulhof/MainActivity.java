@@ -1,6 +1,10 @@
 package com.dsh.digitalerschulhof;
 
+import android.app.UiModeManager;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
