@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_schulhof"
+        android:icon="@drawable/ic_schulhof_24dp"
+        android:title="@string/schulhof" />
+
+    <item
+        android:id="@+id/navigation_website"
+        android:icon="@drawable/ic_website_24dp"
+        android:title="@string/website" />
+
+    <item
+        android:id="@+id/navigation_profil"
+        android:icon="@drawable/ic_profil_24dp"
+        android:title="@string/profil" />
+</menu>

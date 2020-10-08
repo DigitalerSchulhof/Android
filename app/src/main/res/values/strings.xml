@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Digitaler Schulhof</string>
+    <string name="schulhof">Schulhof</string>
+    <string name="website">Website</string>
+    <string name="profil">Profil</string>
+    <string name="benutzername">Benutzername</string>
+    <string name="passwort">Passwort</string>
+    <string name="speichern">Speichern</string>
+    <string name="abbrechen">Abbrechen</string>
+</resources>
