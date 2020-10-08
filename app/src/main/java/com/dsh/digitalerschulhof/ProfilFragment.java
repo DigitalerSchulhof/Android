@@ -104,7 +104,7 @@ public class ProfilFragment extends Fragment {
 
     class SchulenLadenTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected String doInBackground(Void... _) {
+        protected String doInBackground(Void... voids) {
             try {
                 URL url = new URL("https://digitaler-schulhof.de/dshs.php");
                 BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
