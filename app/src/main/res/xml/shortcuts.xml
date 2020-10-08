@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="stundenplan"
+        android:enabled="true"
+        android:icon="@drawable/ic_stundenplan"
+        android:shortcutShortLabel="@string/stundenplan_kurz"
+        android:shortcutLongLabel="@string/stundenplan_lang"
+        android:shortcutDisabledMessage="@string/shortcut_aus">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.dsh.digitalerschulhof"
+            android:targetClass="com.dsh.digitalerschulhof.activities.SchulhofActivity"
+            android:data="Schulhof/Nutzerkonto/Mein_Stundenplan" />
+    </shortcut>
+</shortcuts>

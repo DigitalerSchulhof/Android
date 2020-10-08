@@ -5,6 +5,7 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.dsh.digitalerschulhof.R;
@@ -14,8 +15,15 @@ public class SchulhofActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SchulhofFragment()).commit();
+
+        if(savedInstanceState == null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("pfad", getIntent().getDataString());
+            Fragment frag = new SchulhofFragment();
+            frag.setArguments(bundle);
+
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, frag).commit();
+        }
     }
 
     @Override

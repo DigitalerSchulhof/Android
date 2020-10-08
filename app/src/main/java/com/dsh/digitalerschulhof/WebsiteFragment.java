@@ -88,7 +88,12 @@ public class WebsiteFragment extends Fragment {
             }
         });
 
-        wv.loadUrl(schule);
+        String pfad = "";
+        if(getArguments() != null) {
+            pfad = getArguments().getString("pfad");
+        }
+
+        wv.loadUrl(schule+(pfad.equals("") ? "/" : "/"+pfad));
         sr.setRefreshing(true);
         return view;
     }

@@ -30,6 +30,8 @@ public class SchulhofFragment extends Fragment {
     String SPEICHER_BENUTZER    = "benutzer";
     String SPEICHER_PASSWORT    = "passwort";
 
+    String pfad;
+
     String schule;
 
     WebView wv;
@@ -97,7 +99,12 @@ public class SchulhofFragment extends Fragment {
             }
         });
 
-        wv.loadUrl(schule+"/App");
+        String pfad = "";
+        if(getArguments() != null) {
+            pfad = getArguments().getString("pfad");
+        }
+
+        wv.loadUrl(schule+(pfad.equals("") ? "/App" : "/"+pfad));
         sr.setRefreshing(true);
         return view;
     }

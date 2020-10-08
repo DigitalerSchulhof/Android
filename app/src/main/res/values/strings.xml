@@ -7,4 +7,7 @@
     <string name="passwort">Passwort</string>
     <string name="speichern">Speichern</string>
     <string name="abbrechen">Abbrechen</string>
+    <string name="shortcut_aus">Diese Verknüpfung steht nicht zur verfügung.</string>
+    <string name="stundenplan_kurz">Stundenplan</string>
+    <string name="stundenplan_lang">Mein Stundenplan</string>
 </resources>
