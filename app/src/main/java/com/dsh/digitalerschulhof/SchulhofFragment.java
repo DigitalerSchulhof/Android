@@ -72,16 +72,20 @@ public class SchulhofFragment extends Fragment {
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(WebView view, final String url) {
                 sr.setRefreshing(false);
-                wv.evaluateJavascript("document.getElementById('cms_appAngemeldet').value", new ValueCallback<String>() {
-                    // Wenn nein, anmelden! 2, da String als "" ausgegeben wird
+                wv.evaluateJavascript("typeof CMS_BENUTZERNAME", new ValueCallback<String>() {
+                    // Wenn nein, anmelden!
                     @Override
                     public void onReceiveValue(String value) {
-                        if(value.length() == 2) {
+                        if(value.equals("\"undefined\"")) {
                             String benutzer = laden(SPEICHER_BENUTZER);
                             String passwort = laden(SPEICHER_PASSWORT);
-                            wv.evaluateJavascript("cms_appanmeldung('"+benutzer+"','"+passwort+"');", null);
+                            if(url.startsWith(schule + "/App")) {
+                                wv.evaluateJavascript("cms_appanmeldung('"+benutzer+"','"+passwort+"');", null);
+                            } else {
+                                wv.evaluateJavascript("cms_anmeldung('"+benutzer+"','"+passwort+"');", null);
+                            }
                         }
                     }
                 });
@@ -114,6 +118,8 @@ public class SchulhofFragment extends Fragment {
         if(getArguments() != null) {
             pfad = getArguments().getString("pfad");
         }
+
+        System.err.println(pfad);
 
         wv.loadUrl(schule+(pfad.equals("") ? "/App" : "/"+pfad));
         sr.setRefreshing(true);

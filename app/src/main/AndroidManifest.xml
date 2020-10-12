@@ -28,6 +28,7 @@
         <activity android:name=".activities.WebsiteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>
