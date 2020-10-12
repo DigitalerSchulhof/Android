@@ -119,8 +119,6 @@ public class SchulhofFragment extends Fragment {
             pfad = getArguments().getString("pfad");
         }
 
-        System.err.println(pfad);
-
         wv.loadUrl(schule+(pfad.equals("") ? "/App" : "/"+pfad));
         sr.setRefreshing(true);
         return view;
