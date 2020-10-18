@@ -1,4 +1,4 @@
-package com.dsh.digitalerschulhof;
+package de.dsh;
 
 import android.app.UiModeManager;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
+import com.dsh.digitalerschulhof.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

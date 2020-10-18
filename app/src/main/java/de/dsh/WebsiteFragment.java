@@ -1,4 +1,4 @@
-package com.dsh.digitalerschulhof;
+package de.dsh;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
@@ -25,16 +26,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
+import com.dsh.digitalerschulhof.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class SchulhofFragment extends Fragment {
+public class WebsiteFragment extends Fragment {
     String SPEICHER_NAME        = "speicher";
     String SPEICHER_SCHULE      = "schule";
-    String SPEICHER_BENUTZER    = "benutzer";
-    String SPEICHER_PASSWORT    = "passwort";
-
-    String pfad;
 
     String schule;
 
@@ -45,10 +45,11 @@ public class SchulhofFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_schulhof, container, false);
+        View view = inflater.inflate(R.layout.fragment_website, container, false);
+
         schule = laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de");
-        wv = view.findViewById(R.id.wvSchulhof);
-        sr = view.findViewById(R.id.srSchulhof);
+        wv = view.findViewById(R.id.wvWebsite);
+        sr = view.findViewById(R.id.srWebsite);
 
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setAllowFileAccess(true);
@@ -72,23 +73,8 @@ public class SchulhofFragment extends Fragment {
             }
 
             @Override
-            public void onPageFinished(WebView view, final String url) {
+            public void onPageFinished(WebView view, String url) {
                 sr.setRefreshing(false);
-                wv.evaluateJavascript("typeof CMS_BENUTZERNAME", new ValueCallback<String>() {
-                    // Wenn nein, anmelden!
-                    @Override
-                    public void onReceiveValue(String value) {
-                        if(value.equals("\"undefined\"")) {
-                            String benutzer = laden(SPEICHER_BENUTZER);
-                            String passwort = laden(SPEICHER_PASSWORT);
-                            if(url.startsWith(schule + "/App")) {
-                                wv.evaluateJavascript("cms_appanmeldung('"+benutzer+"','"+passwort+"');", null);
-                            } else {
-                                wv.evaluateJavascript("cms_anmeldung('"+benutzer+"','"+passwort+"');", null);
-                            }
-                        }
-                    }
-                });
                 super.onPageFinished(view, url);
             }
 
@@ -119,7 +105,7 @@ public class SchulhofFragment extends Fragment {
             pfad = getArguments().getString("pfad");
         }
 
-        wv.loadUrl(schule+(pfad.equals("") ? "/App" : "/"+pfad));
+        wv.loadUrl(schule+(pfad.equals("") ? "/" : "/"+pfad));
         sr.setRefreshing(true);
         return view;
     }

@@ -1,4 +1,4 @@
-package com.dsh.digitalerschulhof;
+package de.dsh;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
+
+import com.dsh.digitalerschulhof.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

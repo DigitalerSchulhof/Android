@@ -10,7 +10,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.dsh.digitalerschulhof"
-            android:targetClass="com.dsh.digitalerschulhof.activities.SchulhofActivity"
+            android:targetClass="de.dsh.activities.SchulhofActivity"
             android:data="Schulhof/Nutzerkonto/Mein_Stundenplan" />
     </shortcut>
 </shortcuts>

@@ -1,4 +1,4 @@
-package com.dsh.digitalerschulhof.activities;
+package de.dsh.activities;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.dsh.digitalerschulhof.R;
-import com.dsh.digitalerschulhof.WebsiteFragment;
+import de.dsh.WebsiteFragment;
 
 public class WebsiteActivity extends FragmentActivity {
     @Override
