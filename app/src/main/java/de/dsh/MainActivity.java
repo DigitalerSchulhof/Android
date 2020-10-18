@@ -8,7 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
-import com.dsh.digitalerschulhof.R;
+import de.dsh.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

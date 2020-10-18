@@ -25,11 +25,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
-import com.dsh.digitalerschulhof.R;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.logging.Logger;
 
 public class SchulhofFragment extends Fragment {
     String SPEICHER_NAME        = "speicher";

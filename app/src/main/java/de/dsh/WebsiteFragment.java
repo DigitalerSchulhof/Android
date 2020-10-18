@@ -26,9 +26,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
-import com.dsh.digitalerschulhof.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 

@@ -9,7 +9,7 @@
         android:shortcutDisabledMessage="@string/shortcut_aus">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.dsh.digitalerschulhof"
+            android:targetPackage="de.dsh"
             android:targetClass="de.dsh.activities.SchulhofActivity"
             android:data="Schulhof/Nutzerkonto/Mein_Stundenplan" />
     </shortcut>

@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.dsh.digitalerschulhof.R;
+import de.dsh.R;
 import de.dsh.WebsiteFragment;
 
 public class WebsiteActivity extends FragmentActivity {
