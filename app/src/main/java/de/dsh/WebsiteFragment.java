@@ -102,6 +102,7 @@ public class WebsiteFragment extends Fragment {
             pfad = getArguments().getString("pfad");
         }
 
+        wv.getSettings().setUserAgentString(wv.getSettings().getUserAgentString() + "-AppAndroid");
         wv.loadUrl(schule+(pfad.equals("") ? "/" : "/"+pfad));
         sr.setRefreshing(true);
         return view;
