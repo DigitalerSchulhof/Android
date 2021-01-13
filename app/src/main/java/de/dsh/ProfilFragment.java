@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ProfilFragment extends Fragment {
     String SPEICHER_NAME        = "speicher";
@@ -40,7 +42,7 @@ public class ProfilFragment extends Fragment {
     String benutzer;
     String passwort;
 
-    HashMap<String, String> schulen = new HashMap<>();
+    HashMap<String, String> schulen = new LinkedHashMap<>();
 
     @Nullable
     @Override
@@ -134,13 +136,15 @@ public class ProfilFragment extends Fragment {
                     schulen.put(schule.getString(0) + " (" + schule.getString(1) + ")", schule.getString(2));
                 }
             } catch (JSONException e) {
-                throw new RuntimeException("Kein JSON!!!");
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Fehler beim Laden unterstützter Schulen!", Toast.LENGTH_LONG);
+                toast.show();
+                return;
             }
 
             Spinner spnSchule = getView().findViewById(R.id.spnSchule);
             spnSchule.setAdapter(new ArrayAdapter(getActivity().getApplicationContext(), R.layout.profil_spinner, schulen.keySet().toArray(new String[] {})));
 
-            String s = laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de");
+            String s = laden(SPEICHER_SCHULE, "");
             for(int i = 0; i < schulen.size(); i++) {
                 if(schulen.values().toArray()[i].equals(s)) {
                     spnSchule.setSelection(i);

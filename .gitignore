@@ -12,6 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+/app/release/*
 
 keystore.jks
 keystorepwd.txt
