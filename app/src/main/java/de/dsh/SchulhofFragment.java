@@ -2,6 +2,7 @@ package de.dsh;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.MasterKeys;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
@@ -29,10 +31,14 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class SchulhofFragment extends Fragment {
-    String SPEICHER_NAME        = "speicher";
+    final String SPEICHER_NAME        = "speicher";
     String SPEICHER_SCHULE      = "schule";
     String SPEICHER_BENUTZER    = "benutzer";
     String SPEICHER_PASSWORT    = "passwort";
+
+    MasterKey MASTER_KEY;
+    SharedPreferences PREFERENCES;
+
 
     String pfad;
 
@@ -46,6 +52,14 @@ public class SchulhofFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schulhof, container, false);
+
+        try {
+            MASTER_KEY = new MasterKey.Builder(getActivity().getApplicationContext()).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
+            PREFERENCES = EncryptedSharedPreferences.create(getActivity().getApplicationContext(), SPEICHER_NAME, MASTER_KEY, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
         schule = laden(SPEICHER_SCHULE, "https://digitaler-schulhof.de");
         wv = view.findViewById(R.id.wvSchulhof);
         sr = view.findViewById(R.id.srSchulhof);
@@ -126,22 +140,10 @@ public class SchulhofFragment extends Fragment {
     }
 
     public String laden(String key) {
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, "");
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+        return laden(key, "");
     }
 
     public String laden(String key, String fallback) {
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, fallback);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-        return fallback;
+        return PREFERENCES.getString(key, fallback);
     }
 }

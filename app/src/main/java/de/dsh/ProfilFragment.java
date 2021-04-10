@@ -2,8 +2,10 @@ package de.dsh;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.net.wifi.hotspot2.pps.Credential;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.security.keystore.KeyGenParameterSpec;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.MasterKeys;
 
 import org.json.JSONArray;
@@ -33,10 +36,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class ProfilFragment extends Fragment {
-    String SPEICHER_NAME        = "speicher";
+    final String SPEICHER_NAME        = "speicher";
+
     String SPEICHER_SCHULE      = "schule";
     String SPEICHER_BENUTZER    = "benutzer";
     String SPEICHER_PASSWORT    = "passwort";
+
+    MasterKey MASTER_KEY;
+    SharedPreferences PREFERENCES;
+
+    private static final String AndroidKeyStore = "AndroidKeyStore";
+    private static final String AES_MODE = "AES/GCM/NoPadding";
 
     String schule;
     String benutzer;
@@ -48,6 +58,14 @@ public class ProfilFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profil, container, false);
+
+        try {
+            MASTER_KEY = new MasterKey.Builder(getActivity().getApplicationContext()).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
+            PREFERENCES = EncryptedSharedPreferences.create(getActivity().getApplicationContext(), SPEICHER_NAME, MASTER_KEY, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
         new SchulenLadenTask().execute();
 
         benutzer = laden("benutzer");
@@ -128,7 +146,6 @@ public class ProfilFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String json) {
-
             try {
                 JSONArray arr = new JSONArray(json);
                 for(int i = 0; i < arr.length(); i++) {
@@ -154,33 +171,16 @@ public class ProfilFragment extends Fragment {
     }
 
     public void speichern(String k, String v) {
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            SharedPreferences.Editor edit = EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).edit();
-            edit.putString(k, v);
-            edit.apply();
-        } catch (GeneralSecurityException | IOException ex) {
-            ex.printStackTrace();
-        }
+        SharedPreferences.Editor editor = PREFERENCES.edit();
+        editor.putString(k, v);
+        editor.apply();
     }
 
     public String laden(String key) {
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, "");
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+        return laden(key, "");
     }
 
     public String laden(String key, String fallback) {
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            return EncryptedSharedPreferences.create(SPEICHER_NAME, masterKey, getActivity().getApplicationContext(), EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM).getString(key, fallback);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-        return fallback;
+        return PREFERENCES.getString(key, fallback);
     }
 }
