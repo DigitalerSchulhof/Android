@@ -1,6 +1,7 @@
 package de.dsh;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -53,6 +54,7 @@ public class WebsiteFragment extends Fragment {
             MASTER_KEY = new MasterKey.Builder(getActivity().getApplicationContext()).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
             PREFERENCES = EncryptedSharedPreferences.create(getActivity().getApplicationContext(), SPEICHER_NAME, MASTER_KEY, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch (GeneralSecurityException | IOException e) {
+            getActivity().getSharedPreferences(SPEICHER_NAME, Context.MODE_PRIVATE).edit().clear().apply();
             e.printStackTrace();
         }
 
@@ -125,6 +127,9 @@ public class WebsiteFragment extends Fragment {
     }
 
     public String laden(String key, String fallback) {
+        if(PREFERENCES == null) {
+            return fallback;
+        }
         return PREFERENCES.getString(key, fallback);
     }
 }

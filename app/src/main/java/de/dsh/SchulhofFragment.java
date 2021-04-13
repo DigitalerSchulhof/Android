@@ -1,6 +1,7 @@
 package de.dsh;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -22,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
-import androidx.security.crypto.MasterKeys;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
@@ -39,9 +39,6 @@ public class SchulhofFragment extends Fragment {
     MasterKey MASTER_KEY;
     SharedPreferences PREFERENCES;
 
-
-    String pfad;
-
     String schule;
 
     WebView wv;
@@ -57,6 +54,7 @@ public class SchulhofFragment extends Fragment {
             MASTER_KEY = new MasterKey.Builder(getActivity().getApplicationContext()).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
             PREFERENCES = EncryptedSharedPreferences.create(getActivity().getApplicationContext(), SPEICHER_NAME, MASTER_KEY, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch (GeneralSecurityException | IOException e) {
+            getActivity().getSharedPreferences(SPEICHER_NAME, Context.MODE_PRIVATE).edit().clear().apply();
             e.printStackTrace();
         }
 
@@ -144,6 +142,9 @@ public class SchulhofFragment extends Fragment {
     }
 
     public String laden(String key, String fallback) {
+        if(PREFERENCES == null) {
+            return fallback;
+        }
         return PREFERENCES.getString(key, fallback);
     }
 }
